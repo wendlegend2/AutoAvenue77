@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoAvenue 77 | Премиум запчасти и аксессуары Алматы</title>
+    <title>AutoAvenue 77 | Премиум автотовары в Алматы</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        h1, h2, h3, .brand-font { font-family: 'Orbitron', sans-serif; letter-spacing: -0.02em; }
+        h1, h2, h3, h4, .brand-font { font-family: 'Orbitron', sans-serif; letter-spacing: -0.02em; }
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e0e0e0; margin: 0; }
 
+        /* Фоновая текстура для масштаба */
         .carbon-overlay {
             background-image: 
                 radial-gradient(circle at center, rgba(220, 38, 38, 0.05) 0%, transparent 70%),
-                linear-gradient(rgba(5, 5, 5, 0.9), rgba(5, 5, 5, 0.95)),
+                linear-gradient(rgba(5, 5, 5, 0.93), rgba(5, 5, 5, 0.96)),
                 url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop');
             background-attachment: fixed;
             background-size: cover;
@@ -30,20 +31,29 @@
             background: rgba(255, 255, 255, 0.06);
             border-color: rgba(220, 38, 38, 0.4);
             transform: scale(1.03);
+            box-shadow: 0 10px 30px -10px rgba(220, 38, 38, 0.2);
         }
 
         .hero-title { font-size: clamp(2.5rem, 10vw, 7rem); line-height: 0.9; }
         .neon-text { text-shadow: 0 0 15px rgba(220, 38, 38, 0.5); }
+        
+        nav { border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
     </style>
 </head>
 <body class="carbon-overlay antialiased">
 
-    <nav class="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5 py-4 px-6 md:px-16 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-xl py-4 px-6 md:px-16 flex justify-between items-center">
         <div class="flex items-center space-x-3">
             <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center text-white font-black text-2xl brand-font shadow-[0_0_20px_rgba(220,38,38,0.4)]">AA</div>
             <div class="hidden sm:block">
-                <span class="text-xl font-black uppercase tracking-tighter text-white brand-font">AutoAvenue <span class="text-red-600">77</span></span>
-                <p class="text-[8px] text-gray-500 tracking-[0.4em] uppercase">Premium Car Care</p>
+                <span class="text-xl font-black uppercase tracking-tighter text-white brand-font leading-none">AutoAvenue <span class="text-red-600">77</span></span>
+                <p class="text-[7px] text-gray-500 tracking-[0.4em] uppercase mt-1">Premium Car Care</p>
             </div>
         </div>
         <div class="hidden lg:flex space-x-10 text-[10px] font-bold uppercase tracking-widest text-gray-400">
@@ -53,21 +63,21 @@
             <a href="#contact" class="hover:text-red-500 transition">Контакты</a>
         </div>
         <div class="text-right">
-            <a href="tel:+77018087768" class="text-lg md:text-xl font-black text-red-600 hover:text-red-400 transition brand-font tracking-tighter">+7 701 808 77 68</a>
-            <p class="text-[9px] uppercase font-bold text-gray-500">Алматы | Жандос</p>
+            <a href="tel:+77018087768" class="text-lg md:text-xl font-black text-red-600 hover:text-red-400 transition brand-font tracking-tighter leading-none">+7 701 808 77 68</a>
+            <p class="text-[9px] uppercase font-bold text-gray-500 mt-1 italic">Алматы | Жандос</p>
         </div>
     </nav>
 
-    <header class="min-h-screen flex items-center justify-center text-center px-4 pt-20">
-        <div class="max-w-6xl">
-            <span class="inline-block px-4 py-1 border border-red-600/30 text-red-500 text-[10px] font-bold uppercase tracking-[0.5em] rounded-full mb-6 neon-text">Est. 2026 | Almaty</span>
-            <h1 class="hero-title font-black uppercase mb-8 tracking-tighter text-white">
+    <header class="min-h-screen flex items-center justify-center text-center px-4 pt-20 relative">
+        <div class="max-w-6xl w-full">
+            <span class="inline-block px-5 py-2 border border-red-600/30 text-red-500 text-[10px] font-bold uppercase tracking-[0.5em] rounded-full mb-8 neon-text">Бостандыкский район</span>
+            <h1 class="hero-title font-black uppercase mb-8 tracking-tighter text-white brand-font">
                 AUTO AVENUE<br><span class="text-red-600 italic">SEVENTY SEVEN</span>
             </h1>
-            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed mb-12">
-                Специализированный центр автомобильных аксессуаров и расходных материалов в Бостандыкском районе. Мы объединяем качество мировых брендов и персональный сервис.
+            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed mb-12 italic">
+                Специализированный магазин автомобильных аксессуаров и расходных материалов. Мы объединяем качество мировых брендов и персональный сервис.
             </p>
-            <div class="flex flex-col md:flex-row gap-6 justify-center items-center font-bold uppercase text-[10px] tracking-widest">
+            <div class="flex flex-col md:flex-row gap-5 justify-center items-center font-bold uppercase text-[10px] tracking-widest">
                 <a href="#catalog" class="w-full md:w-auto bg-red-600 text-white px-12 py-5 rounded-2xl hover:bg-red-700 transition-all shadow-lg shadow-red-600/20">Исследовать каталог</a>
                 <a href="https://wa.me/77018087768" target="_blank" class="w-full md:w-auto bg-white/5 border border-white/10 text-white px-12 py-5 rounded-2xl hover:bg-white/10 transition-all">Связаться в WhatsApp</a>
             </div>
@@ -78,13 +88,13 @@
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
             <div class="space-y-4">
                 <h3 class="text-red-600 font-bold uppercase text-xs tracking-widest">01. Качество</h3>
-                <p class="text-gray-200 font-bold text-xl uppercase brand-font italic">Только проверенные бренды</p>
+                <p class="text-gray-200 font-bold text-xl uppercase brand-font italic">Проверенные бренды</p>
                 <p class="text-gray-500 text-sm leading-relaxed">Мы не продаем то, что не поставили бы в свой автомобиль. Тщательный отбор каждого поставщика.</p>
             </div>
             <div class="space-y-4">
                 <h3 class="text-red-600 font-bold uppercase text-xs tracking-widest">02. Наличие</h3>
                 <p class="text-gray-200 font-bold text-xl uppercase brand-font italic">Склад в Алматы</p>
-                <p class="text-gray-500 text-sm leading-relaxed">Более 500 позиций аксессуаров и расходников готовы к выдаче в день обращения по адресу Исиналиева 1/1.</p>
+                <p class="text-gray-500 text-sm leading-relaxed">Сотни позиций аксессуаров и расходников готовы к выдаче в день обращения по адресу Исиналиева 1/1.</p>
             </div>
             <div class="space-y-4">
                 <h3 class="text-red-600 font-bold uppercase text-xs tracking-widest">03. Сервис</h3>
@@ -97,7 +107,7 @@
     <section id="catalog" class="py-32 px-6 max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div class="text-left">
-                <h2 class="text-4xl md:text-6xl font-black uppercase italic text-white leading-none mb-4">Каталог</h2>
+                <h2 class="text-4xl md:text-6xl font-black uppercase italic text-white leading-none mb-4 brand-font">Каталог</h2>
                 <div class="h-1 w-24 bg-red-600"></div>
             </div>
             <p class="text-gray-500 text-xs font-bold uppercase tracking-[0.3em]">Select Category // AutoAvenue 77</p>
@@ -106,42 +116,42 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">01</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Вонючки</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Вонючки</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Эксклюзивные ароматы, подвесные флаконы и гелевые освежители.</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">02</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Незамерзайка</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Незамерзайка</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Жидкость омывателя премиум-класса без резкого запаха (-30°C).</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">03</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Щетки</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Щетки</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Бескаркасные и гибридные дворники для четкого обзора.</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">04</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Чернитель</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Чернитель</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Профессиональные средства для глубокого блеска шин.</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">05</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Автосвет</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Автосвет</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">LED, ксеноновые и галогеновые лампы всех стандартов.</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">06</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Аптечки</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Аптечки</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Медицинские наборы для прохождения техосмотра и безопасности.</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">07</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Огнетушители</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Огнетушители</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Порошковые огнетушители (2кг/4кг) с действующим сроком.</p>
             </div>
             <div class="glass-card p-10 rounded-[2rem]">
                 <div class="text-red-600 mb-6 text-2xl font-black italic">08</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg">Аксессуары</h4>
+                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Аксессуары</h4>
                 <p class="text-gray-500 text-xs leading-relaxed">Держатели, зарядки, органайзеры и коврики в наличии.</p>
             </div>
         </div>
@@ -149,15 +159,15 @@
 
     <section id="faq" class="py-32 px-6 bg-white/[0.01] border-t border-white/5">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-black uppercase mb-16 italic text-center brand-font tracking-tight italic">Частые вопросы</h2>
+            <h2 class="text-3xl font-black uppercase mb-16 italic text-center brand-font tracking-tight">Частые вопросы</h2>
             <div class="space-y-8">
                 <div class="border-b border-white/5 pb-6">
                     <h4 class="text-white font-bold mb-2 uppercase text-sm">Где именно вы находитесь?</h4>
-                    <p class="text-gray-500 text-sm italic">Мы находимся в Алматы, Бостандыкский район, по адресу ул. Исиналиева, 1/1. Позвоните Жандосу перед приездом!</p>
+                    <p class="text-gray-500 text-sm italic">Мы находимся в Алматы, Бостандыкский район, по адресу ул. Исиналиева, 1/1. Рекомендуем позвонить Жандосу перед приездом!</p>
                 </div>
                 <div class="border-b border-white/5 pb-6">
                     <h4 class="text-white font-bold mb-2 uppercase text-sm">Есть ли доставка?</h4>
-                    <p class="text-gray-500 text-sm italic">Да, мы осуществляем доставку по городу Алматы через курьерские службы (Яндекс/Indriver).</p>
+                    <p class="text-gray-500 text-sm italic">Да, мы осуществляем доставку по городу Алматы через Яндекс/Indriver курьеров.</p>
                 </div>
                 <div class="border-b border-white/5 pb-6">
                     <h4 class="text-white font-bold mb-2 uppercase text-sm">Можно ли заказать запчасти, которых нет в списке?</h4>
@@ -167,37 +177,37 @@
         </div>
     </section>
 
-    <section id="contact" class="py-32 px-6">
-        <div class="max-w-6xl mx-auto glass-card rounded-[3rem] p-8 md:p-16 flex flex-col lg:flex-row gap-16 items-stretch">
+    <section id="contact" class="py-32 px-6 border-t border-white/5">
+        <div class="max-w-6xl mx-auto glass-card rounded-[3rem] p-8 md:p-16 flex flex-col lg:flex-row gap-16 items-stretch shadow-2xl">
             <div class="flex-1 space-y-8 flex flex-col justify-center">
                 <div>
-                    <span class="text-red-600 font-bold uppercase text-[10px] tracking-widest">Точка на карте</span>
-                    <h2 class="text-4xl font-black uppercase text-white brand-font italic mt-2">Найти нас</h2>
+                    <span class="text-red-600 font-bold uppercase text-[10px] tracking-widest">Точный адрес</span>
+                    <h2 class="text-4xl font-black uppercase text-white brand-font italic mt-2">Магазин в Алматы</h2>
                 </div>
                 
                 <div class="space-y-2">
-                    <p class="text-gray-400 text-lg italic">Алматы, Бостандыкский район,</p>
-                    <p class="text-white text-xl font-bold">ул. Исиналиева, 1/1</p>
-                    <p class="text-red-500 text-xs font-bold uppercase tracking-wider mt-2">Магазин AutoAvenue 77</p>
+                    <p class="text-gray-400 text-lg italic">Бостандыкский район,</p>
+                    <p class="text-white text-2xl font-bold italic">улица Исиналиева, дом 1/1</p>
                 </div>
 
                 <div class="flex flex-wrap gap-3 pt-4">
-                    <a href="https://2gis.kz/almaty/geo/70000001032333446" target="_blank" class="bg-[#24a723] hover:bg-[#1e8a1d] text-white px-6 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 shadow-lg shadow-green-900/20">
-                        Маршрут в 2ГИС
+                    <a href="https://2gis.kz/almaty/search/43.193926%2C76.90354" target="_blank" class="bg-[#24a723] text-white px-8 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#1e8a1d] transition-all shadow-lg shadow-green-900/20">
+                        Открыть в 2ГИС
                     </a>
-                    <a href="yandexnavi://build_route_on_map?lat_to=43.201416&lon_to=76.892415" class="bg-[#ffcc00] hover:bg-[#e6b800] text-black px-6 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all flex items-center gap-2 shadow-lg shadow-yellow-900/20">
-                        Яндекс Навигатор
+                    <a href="yandexnavi://build_route_on_map?lat_to=43.193926&lon_to=76.90354" class="bg-[#ffcc00] text-black px-8 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#e6b800] transition-all shadow-lg shadow-yellow-900/20">
+                        Навигатор
                     </a>
                 </div>
 
                 <div class="pt-8 border-t border-white/10">
-                    <p class="text-red-600 font-bold uppercase text-[10px] tracking-widest mb-4">Связаться с Жандосом</p>
-                    <a href="tel:+77018087768" class="text-3xl md:text-5xl font-black text-white hover:text-red-500 transition brand-font italic">+7 701 808 77 68</a>
+                    <p class="text-red-600 font-bold uppercase text-[10px] tracking-widest mb-4">На связи</p>
+                    <a href="tel:+77018087768" class="text-3xl md:text-5xl font-black text-white hover:text-red-500 transition brand-font italic tracking-tighter leading-none">+7 701 808 77 68</a>
+                    <p class="mt-4 text-gray-500 font-bold italic text-xl uppercase">Жандос</p>
                 </div>
             </div>
 
-            <div class="flex-1 w-full min-h-[450px] rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl relative">
-                <iframe src="https://yandex.ru/map-widget/v1/?ll=76.892415%2C43.201416&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgoxNTIyODU1Mjk4EkTQmtCw0LfQsNGF0YHRgtCw0L0sINCQ0LvQvNCw0YLRiywg0YPQu9C40YbQsCDQmNGB0LjQvdCw0LvQuNC10LLQsCwgMS8xIgoNfS1DQhVqCkJh&z=17" 
+            <div class="flex-1 w-full min-h-[450px] rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl relative bg-black">
+                <iframe src="https://yandex.ru/map-widget/v1/?ll=76.90354,43.193926&z=18&l=map&pt=76.90354,43.193926,pm2rdm" 
                         width="100%" 
                         height="100%" 
                         frameborder="0" 
@@ -208,16 +218,16 @@
         </div>
     </section>
 
-    <footer class="py-20 text-center border-t border-white/5">
+    <footer class="py-20 text-center border-t border-white/5 bg-[#050505]">
         <div class="brand-font text-4xl font-black uppercase italic mb-6">AutoAvenue <span class="text-red-600">77</span></div>
         <div class="flex justify-center space-x-8 text-[9px] font-bold uppercase tracking-[0.4em] text-gray-600 mb-8">
-            <a href="#about" class="hover:text-white transition">About</a>
-            <a href="#catalog" class="hover:text-white transition">Catalog</a>
-            <a href="#contact" class="hover:text-white transition">Contact</a>
+            <a href="#about" class="hover:text-white transition">О нас</a>
+            <a href="#catalog" class="hover:text-white transition">Каталог</a>
+            <a href="#contact" class="hover:text-white transition">Контакты</a>
         </div>
         <p class="text-gray-700 text-[8px] uppercase tracking-[0.6em] italic leading-loose">
-            &copy; 2026 AutoAvenue 77 Digital Portal. Designed for performance.<br>
-            Almaty, Isinalieva 1/1
+            &copy; 2025 AutoAvenue 77. Алматы, Исиналиева 1/1.<br>
+            Designed for performance.
         </p>
     </footer>
 
