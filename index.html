@@ -3,233 +3,437 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoAvenue 77 | Премиум автотовары в Алматы</title>
+    <title>AutoAvenue 77 | Премиум автотовары</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { orbitron: ['Orbitron', 'sans-serif'], inter: ['Inter', 'sans-serif'] },
+                    colors: { brand: '#dc2626', dark: '#030303', darker: '#0a0a0a' },
+                    animation: { 'marquee': 'marquee 25s linear infinite' },
+                    keyframes: { marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-50%)' } } }
+                }
+            }
+        }
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
     <style>
-        h1, h2, h3, h4, .brand-font { font-family: 'Orbitron', sans-serif; letter-spacing: -0.02em; }
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e0e0e0; margin: 0; }
-
-        /* Фоновая текстура для масштаба */
-        .carbon-overlay {
-            background-image: 
-                radial-gradient(circle at center, rgba(220, 38, 38, 0.05) 0%, transparent 70%),
-                linear-gradient(rgba(5, 5, 5, 0.93), rgba(5, 5, 5, 0.96)),
-                url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop');
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(220, 38, 38, 0.4);
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px -10px rgba(220, 38, 38, 0.2);
-        }
-
-        .hero-title { font-size: clamp(2.5rem, 10vw, 7rem); line-height: 0.9; }
-        .neon-text { text-shadow: 0 0 15px rgba(220, 38, 38, 0.5); }
-        
-        nav { border-bottom: 1px solid rgba(255,255,255,0.05); }
-
-        /* Кастомный скроллбар */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
+        body { background-color: #030303; color: #e0e0e0; overflow-x: hidden; }
+        #preloader { position: fixed; inset: 0; z-index: 9999; background: #030303; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
+        .loader { width: 50px; height: 50px; border: 3px solid rgba(220,38,38,0.3); border-radius: 50%; border-top-color: #dc2626; animation: spin 1s infinite linear; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .carbon-bg { background-image: radial-gradient(circle at 15% 50%, rgba(220, 38, 38, 0.05), transparent 25%), linear-gradient(to bottom, rgba(3, 3, 3, 0.95), rgba(3, 3, 3, 0.99)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000&auto=format&fit=crop'); background-attachment: fixed; background-size: cover; }
+        .glass-panel { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        #cart-sidebar, #product-modal { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        #cart-sidebar.open, #product-modal.open { transform: translateX(0); }
+        .overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .overlay.open { opacity: 1; pointer-events: auto; }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030303; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 10px; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="carbon-overlay antialiased">
+<body class="carbon-bg font-inter antialiased overflow-hidden">
 
-    <nav class="fixed top-0 w-full z-50 bg-[#050505]/80 backdrop-blur-xl py-4 px-6 md:px-16 flex justify-between items-center">
-        <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center text-white font-black text-2xl brand-font shadow-[0_0_20px_rgba(220,38,38,0.4)]">AA</div>
-            <div class="hidden sm:block">
-                <span class="text-xl font-black uppercase tracking-tighter text-white brand-font leading-none">AutoAvenue <span class="text-red-600">77</span></span>
-                <p class="text-[7px] text-gray-500 tracking-[0.4em] uppercase mt-1">Premium Car Care</p>
+    <div id="preloader"><div class="flex flex-col items-center"><div class="loader mb-4"></div><p class="font-orbitron font-black text-brand uppercase text-xs">Loading</p></div></div>
+
+    <nav class="fixed top-0 w-full z-40 glass-panel py-4 px-6 md:px-12 transition-all" id="navbar">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="w-10 h-10 bg-brand rounded-lg flex items-center justify-center text-white font-orbitron font-black text-xl">AA</div>
+                <div class="hidden sm:block"><span class="text-xl font-orbitron font-black uppercase text-white leading-none">AutoAvenue <span class="text-brand">77</span></span></div>
             </div>
-        </div>
-        <div class="hidden lg:flex space-x-10 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-            <a href="#about" class="hover:text-red-500 transition">О нас</a>
-            <a href="#catalog" class="hover:text-red-500 transition">Каталог</a>
-            <a href="#faq" class="hover:text-red-500 transition">FAQ</a>
-            <a href="#contact" class="hover:text-red-500 transition">Контакты</a>
-        </div>
-        <div class="text-right">
-            <a href="tel:+77018087768" class="text-lg md:text-xl font-black text-red-600 hover:text-red-400 transition brand-font tracking-tighter leading-none">+7 701 808 77 68</a>
-            <p class="text-[9px] uppercase font-bold text-gray-500 mt-1 italic">Алматы | Жандос</p>
+            <div class="hidden lg:flex space-x-8 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-400">
+                <a href="#about" class="hover:text-white transition" data-i18n="nav_about">О магазине</a>
+                <a href="#catalog" class="hover:text-white transition" data-i18n="nav_catalog">Каталог</a>
+                <a href="#contact" class="hover:text-white transition" data-i18n="nav_contact">Контакты</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <button id="lang-btn" class="text-white font-bold text-xs uppercase border border-white/20 px-3 py-1.5 rounded-lg hover:bg-white/10 transition">KZ</button>
+                <button id="cart-btn" class="relative bg-white/5 hover:bg-white/10 p-3 rounded-xl transition border border-white/10">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-brand text-white text-[10px] font-bold px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
         </div>
     </nav>
 
-    <header class="min-h-screen flex items-center justify-center text-center px-4 pt-20 relative">
-        <div class="max-w-6xl w-full">
-            <span class="inline-block px-5 py-2 border border-red-600/30 text-red-500 text-[10px] font-bold uppercase tracking-[0.5em] rounded-full mb-8 neon-text">Бостандыкский район</span>
-            <h1 class="hero-title font-black uppercase mb-8 tracking-tighter text-white brand-font">
-                AUTO AVENUE<br><span class="text-red-600 italic">SEVENTY SEVEN</span>
-            </h1>
-            <p class="text-gray-400 max-w-2xl mx-auto text-sm md:text-lg font-light leading-relaxed mb-12 italic">
-                Специализированный магазин автомобильных аксессуаров и расходных материалов. Мы объединяем качество мировых брендов и персональный сервис.
-            </p>
-            <div class="flex flex-col md:flex-row gap-5 justify-center items-center font-bold uppercase text-[10px] tracking-widest">
-                <a href="#catalog" class="w-full md:w-auto bg-red-600 text-white px-12 py-5 rounded-2xl hover:bg-red-700 transition-all shadow-lg shadow-red-600/20">Исследовать каталог</a>
-                <a href="https://wa.me/77018087768" target="_blank" class="w-full md:w-auto bg-white/5 border border-white/10 text-white px-12 py-5 rounded-2xl hover:bg-white/10 transition-all">Связаться в WhatsApp</a>
+    <div id="main-overlay" class="overlay fixed inset-0 bg-black/80 backdrop-blur-sm z-50"></div>
+
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full md:w-[400px] h-full bg-darker border-l border-white/10 z-50 flex flex-col">
+        <div class="p-6 border-b border-white/10 flex justify-between items-center">
+            <h3 class="font-orbitron font-black text-2xl uppercase text-white" data-i18n="cart_title">Корзина</h3>
+            <button class="close-sidebar text-gray-400 hover:text-brand"><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
+        <div class="p-6 border-t border-white/10 bg-dark">
+            <div class="flex justify-between items-center mb-6 text-white font-bold"><span data-i18n="cart_total">Итого:</span><span id="cart-total" class="text-2xl font-orbitron">0 ₸</span></div>
+            <button id="checkout-btn" class="w-full bg-brand text-white py-4 rounded-xl font-bold uppercase text-xs" data-i18n="cart_btn">Оформить в WhatsApp</button>
+        </div>
+    </div>
+
+    <div id="product-modal" class="fixed top-0 right-0 w-full md:w-[500px] h-full bg-darker border-l border-white/10 z-50 flex flex-col overflow-y-auto">
+        <div class="p-8 flex-1 flex flex-col relative pt-16">
+            <button class="close-sidebar absolute top-6 right-6 bg-white/5 hover:bg-white/10 p-2 rounded-full text-white transition"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            <span id="modal-cat" class="text-brand text-[10px] font-bold uppercase tracking-widest mb-2"></span>
+            <h2 id="modal-title" class="text-3xl font-orbitron font-black text-white uppercase mb-4"></h2>
+            <p id="modal-desc" class="text-gray-400 text-sm mb-8 leading-relaxed"></p>
+            <div class="bg-white/5 border border-white/10 p-6 rounded-2xl mb-6">
+                <h4 class="text-white text-xs font-bold uppercase mb-3" data-i18n="specs">Характеристики</h4>
+                <p id="modal-specs" class="text-gray-400 text-sm leading-relaxed"></p>
             </div>
+            <div class="mt-auto pt-6 border-t border-white/10 flex justify-between items-center">
+                <span id="modal-price" class="text-3xl font-orbitron font-black text-white"></span>
+                <button id="modal-add-btn" class="bg-brand text-white px-8 py-4 rounded-xl font-bold uppercase text-xs hover:bg-red-700 transition" data-i18n="add_to_cart">В корзину</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="min-h-screen flex items-center justify-center text-center px-4 pt-20">
+        <div class="max-w-5xl w-full reveal">
+            <h1 class="font-orbitron font-black uppercase text-white leading-none text-[clamp(2.5rem,8vw,6rem)]">AUTO AVENUE <span class="text-brand italic">77</span></h1>
+            <p class="text-gray-400 max-w-xl mx-auto text-sm md:text-lg font-light mt-6 mb-10 italic" data-i18n="hero_desc">Интерактивный каталог автоаксессуаров в Алматы.</p>
+            <a href="#catalog" class="inline-block bg-white text-dark px-10 py-4 rounded-2xl font-bold uppercase text-[11px] tracking-widest hover:scale-105 transition" data-i18n="btn_catalog">Перейти в каталог</a>
         </div>
     </header>
 
-    <section id="about" class="py-32 px-6 border-y border-white/5 bg-white/[0.01]">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
-            <div class="space-y-4">
-                <h3 class="text-red-600 font-bold uppercase text-xs tracking-widest">01. Качество</h3>
-                <p class="text-gray-200 font-bold text-xl uppercase brand-font italic">Проверенные бренды</p>
-                <p class="text-gray-500 text-sm leading-relaxed">Мы не продаем то, что не поставили бы в свой автомобиль. Тщательный отбор каждого поставщика.</p>
+    <div class="border-y border-white/10 bg-darker overflow-hidden py-4 flex relative z-20">
+        <div class="whitespace-nowrap animate-marquee flex items-center space-x-12 text-2xl font-orbitron font-black uppercase text-white/20">
+            <span>OSRAM</span><span>•</span><span>PHILIPS</span><span>•</span><span>BOSCH</span><span>•</span><span>MEGUIAR'S</span><span>•</span><span>MOTUL</span><span>•</span><span>AREON</span><span>•</span><span>NGK</span><span>•</span><span>BREMBO</span><span>•</span>
+            <span>OSRAM</span><span>•</span><span>PHILIPS</span><span>•</span><span>BOSCH</span><span>•</span><span>MEGUIAR'S</span><span>•</span><span>MOTUL</span><span>•</span><span>AREON</span><span>•</span><span>NGK</span><span>•</span><span>BREMBO</span>
+        </div>
+    </div>
+
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto border-b border-white/5">
+        <div class="text-center mb-16 reveal">
+            <h2 class="text-4xl md:text-5xl font-orbitron font-black uppercase italic text-white mb-4" data-i18n="nav_about">О магазине</h2>
+            <div class="h-1 w-16 bg-brand mx-auto mb-8"></div>
+            <p class="text-gray-400 max-w-3xl mx-auto text-sm md:text-base leading-relaxed" data-i18n="about_text_1">
+                AutoAvenue 77 — это специализированный центр в Бостандыкском районе Алматы. Мы предлагаем только проверенные бренды автоаксессуаров, света и химии. Наша главная цель — сделать уход за вашим автомобилем профессиональным и доступным.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal mb-16">
+            <div class="glass-panel p-10 rounded-[2rem] text-center hover:border-brand/50 transition">
+                <p class="text-5xl font-orbitron font-black text-brand mb-4">100%</p>
+                <p class="text-sm uppercase font-bold text-gray-400 tracking-widest" data-i18n="about_stat_1">Оригинальная продукция</p>
             </div>
-            <div class="space-y-4">
-                <h3 class="text-red-600 font-bold uppercase text-xs tracking-widest">02. Наличие</h3>
-                <p class="text-gray-200 font-bold text-xl uppercase brand-font italic">Склад в Алматы</p>
-                <p class="text-gray-500 text-sm leading-relaxed">Сотни позиций аксессуаров и расходников готовы к выдаче в день обращения по адресу Исиналиева 1/1.</p>
+            <div class="glass-panel p-10 rounded-[2rem] text-center hover:border-brand/50 transition">
+                <p class="text-5xl font-orbitron font-black text-brand mb-4">500+</p>
+                <p class="text-sm uppercase font-bold text-gray-400 tracking-widest" data-i18n="about_stat_2">Товаров в наличии</p>
             </div>
-            <div class="space-y-4">
-                <h3 class="text-red-600 font-bold uppercase text-xs tracking-widest">03. Сервис</h3>
-                <p class="text-gray-200 font-bold text-xl uppercase brand-font italic">Экспертный подбор</p>
-                <p class="text-gray-500 text-sm leading-relaxed">Менеджер Жандос поможет подобрать детали именно под вашу марку и модель автомобиля.</p>
+            <div class="glass-panel p-10 rounded-[2rem] text-center hover:border-brand/50 transition">
+                <p class="text-5xl font-orbitron font-black text-brand mb-4">24/7</p>
+                <p class="text-sm uppercase font-bold text-gray-400 tracking-widest" data-i18n="about_stat_3">Поддержка клиентов</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center reveal">
+            <div class="glass-panel p-8 md:p-12 rounded-[2rem] border-l-4 border-l-brand">
+                <h3 class="text-2xl font-orbitron font-black uppercase text-white mb-6" data-i18n="about_title_2">Что мы предлагаем?</h3>
+                <ul class="space-y-4 text-gray-400 text-sm md:text-base">
+                    <li class="flex items-start gap-3">
+                        <span class="text-brand">●</span> <span data-i18n="about_list_1"><strong>Автосвет:</strong> LED, ксенон и галоген с официальной гарантией.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-brand">●</span> <span data-i18n="about_list_2"><strong>Автохимия:</strong> Премиальные чернители, полироли и очистители кузова.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-brand">●</span> <span data-i18n="about_list_3"><strong>Аксессуары:</strong> Ароматизаторы, щетки стеклоочистителя, аптечки.</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="space-y-6">
+                <h3 class="text-2xl font-orbitron font-black uppercase text-white" data-i18n="about_title_3">Почему выбирают нас?</h3>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed" data-i18n="about_text_2">
+                    В отличие от крупных сетевых магазинов, мы знаем каждого нашего клиента и его автомобиль. Менеджер Жандос лично проверяет качество каждой партии товара. Мы не продаем то, что не стали бы использовать сами.
+                </p>
+                <p class="text-gray-400 text-sm md:text-base leading-relaxed" data-i18n="about_text_3">
+                    У нас нет сложных процедур возврата или долгого ожидания консультанта. Напишите нам в WhatsApp, скиньте фото фары или панели, и мы за 5 минут подберем нужную деталь.
+                </p>
             </div>
         </div>
     </section>
 
-    <section id="catalog" class="py-32 px-6 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
-            <div class="text-left">
-                <h2 class="text-4xl md:text-6xl font-black uppercase italic text-white leading-none mb-4 brand-font">Каталог</h2>
-                <div class="h-1 w-24 bg-red-600"></div>
+    <section id="catalog" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-10 reveal">
+            <h2 class="text-4xl md:text-5xl font-orbitron font-black uppercase text-white mb-6" data-i18n="nav_catalog">Каталог</h2>
+            <div class="max-w-md mx-auto relative mb-8">
+                <input type="text" id="search-input" placeholder="Поиск товаров..." class="w-full bg-white/5 border border-white/10 rounded-full py-3 px-6 text-white text-sm focus:border-brand outline-none transition" data-i18n-ph="ph_search">
+                <svg class="w-5 h-5 absolute right-5 top-3.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
-            <p class="text-gray-500 text-xs font-bold uppercase tracking-[0.3em]">Select Category // AutoAvenue 77</p>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">01</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Вонючки</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Эксклюзивные ароматы, подвесные флаконы и гелевые освежители.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">02</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Незамерзайка</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Жидкость омывателя премиум-класса без резкого запаха (-30°C).</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">03</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Щетки</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Бескаркасные и гибридные дворники для четкого обзора.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">04</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Чернитель</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Профессиональные средства для глубокого блеска шин.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">05</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Автосвет</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">LED, ксеноновые и галогеновые лампы всех стандартов.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">06</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Аптечки</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Медицинские наборы для прохождения техосмотра и безопасности.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">07</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Огнетушители</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Порошковые огнетушители (2кг/4кг) с действующим сроком.</p>
-            </div>
-            <div class="glass-card p-10 rounded-[2rem]">
-                <div class="text-red-600 mb-6 text-2xl font-black italic">08</div>
-                <h4 class="text-white font-bold uppercase mb-3 text-lg brand-font italic">Аксессуары</h4>
-                <p class="text-gray-500 text-xs leading-relaxed">Держатели, зарядки, органайзеры и коврики в наличии.</p>
+            <div class="flex flex-wrap justify-center gap-3" id="filters">
+                <button class="filter-btn active border-brand bg-brand/20 text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition" data-filter="all" data-i18n="f_all">Всё</button>
+                <button class="filter-btn border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/30 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition" data-filter="chem" data-i18n="f_chem">Химия</button>
+                <button class="filter-btn border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/30 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition" data-filter="light" data-i18n="f_light">Свет</button>
+                <button class="filter-btn border-white/10 bg-white/5 text-gray-400 hover:text-white hover:border-white/30 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition" data-filter="acc" data-i18n="f_acc">Аксессуары</button>
             </div>
         </div>
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
     </section>
 
-    <section id="faq" class="py-32 px-6 bg-white/[0.01] border-t border-white/5">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-black uppercase mb-16 italic text-center brand-font tracking-tight">Частые вопросы</h2>
-            <div class="space-y-8">
-                <div class="border-b border-white/5 pb-6">
-                    <h4 class="text-white font-bold mb-2 uppercase text-sm">Где именно вы находитесь?</h4>
-                    <p class="text-gray-500 text-sm italic">Мы находимся в Алматы, Бостандыкский район, по адресу ул. Исиналиева, 1/1. Рекомендуем позвонить Жандосу перед приездом!</p>
+    <section id="faq" class="py-24 px-6 max-w-4xl mx-auto border-t border-white/5">
+        <div class="text-center mb-16 reveal">
+            <span class="text-brand font-bold uppercase text-[10px] tracking-widest">Полезная информация</span>
+            <h2 class="text-4xl md:text-5xl font-orbitron font-black uppercase italic text-white mt-2 mb-4">Частые вопросы</h2>
+        </div>
+
+        <div class="space-y-4 reveal">
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <button class="faq-btn w-full px-8 py-6 flex justify-between items-center focus:outline-none text-left bg-white/5 hover:bg-white/10 transition">
+                    <span class="text-white font-bold uppercase text-sm tracking-wide">Как оформить заказ через сайт?</span>
+                    <svg class="w-6 h-6 text-brand transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content bg-transparent px-8">
+                    <p class="text-gray-400 text-sm leading-relaxed pb-6 pt-2 border-t border-white/10 mt-2">Добавьте нужные товары в корзину, перейдите в неё (значок в правом верхнем углу) и нажмите кнопку «Оформить в WhatsApp». Сайт автоматически сформирует список вашего заказа и перекинет вас в чат с нашим менеджером для подтверждения.</p>
                 </div>
-                <div class="border-b border-white/5 pb-6">
-                    <h4 class="text-white font-bold mb-2 uppercase text-sm">Есть ли доставка?</h4>
-                    <p class="text-gray-500 text-sm italic">Да, мы осуществляем доставку по городу Алматы через Яндекс/Indriver курьеров.</p>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <button class="faq-btn w-full px-8 py-6 flex justify-between items-center focus:outline-none text-left bg-white/5 hover:bg-white/10 transition">
+                    <span class="text-white font-bold uppercase text-sm tracking-wide">Где вы находитесь и есть ли самовывоз?</span>
+                    <svg class="w-6 h-6 text-brand transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content bg-transparent px-8">
+                    <p class="text-gray-400 text-sm leading-relaxed pb-6 pt-2 border-t border-white/10 mt-2">Да, у нас есть точка самовывоза. Мы находимся в Алматы, Бостандыкский район, ул. Исиналиева, 1/1. Рекомендуем предварительно связаться с менеджером перед приездом.</p>
                 </div>
-                <div class="border-b border-white/5 pb-6">
-                    <h4 class="text-white font-bold mb-2 uppercase text-sm">Можно ли заказать запчасти, которых нет в списке?</h4>
-                    <p class="text-gray-500 text-sm italic">Конечно. Жандос поможет найти и заказать любую деталь по VIN-коду вашего автомобиля.</p>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden">
+                <button class="faq-btn w-full px-8 py-6 flex justify-between items-center focus:outline-none text-left bg-white/5 hover:bg-white/10 transition">
+                    <span class="text-white font-bold uppercase text-sm tracking-wide">Осуществляете ли вы доставку?</span>
+                    <svg class="w-6 h-6 text-brand transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="faq-content bg-transparent px-8">
+                    <p class="text-gray-400 text-sm leading-relaxed pb-6 pt-2 border-t border-white/10 mt-2">Конечно. Мы организуем доставку по Алматы через сервисы Яндекс.Go или InDrive. Стоимость доставки оплачивается по тарифу курьерской службы при получении.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-32 px-6 border-t border-white/5">
-        <div class="max-w-6xl mx-auto glass-card rounded-[3rem] p-8 md:p-16 flex flex-col lg:flex-row gap-16 items-stretch shadow-2xl">
-            <div class="flex-1 space-y-8 flex flex-col justify-center">
-                <div>
-                    <span class="text-red-600 font-bold uppercase text-[10px] tracking-widest">Точный адрес</span>
-                    <h2 class="text-4xl font-black uppercase text-white brand-font italic mt-2">Магазин в Алматы</h2>
+    <section id="contact" class="py-24 px-6 border-t border-white/5 bg-darker">
+        <div class="max-w-6xl mx-auto glass-panel rounded-[3rem] p-8 md:p-12 flex flex-col lg:flex-row gap-12 reveal shadow-2xl">
+            <div class="flex-1 space-y-6 flex flex-col justify-center">
+                <h2 class="text-4xl font-orbitron font-black uppercase text-white italic" data-i18n="address">Наш адрес</h2>
+                <p class="text-white text-xl font-bold border-l-2 border-brand pl-4" data-i18n="address_full">Алматы, Бостандыкский район,<br>ул. Исиналиева, 1/1</p>
+                <div class="flex gap-3">
+                    <a href="https://2gis.kz/almaty/search/43.193926%2C76.90354" target="_blank" class="bg-[#24a723] text-white px-6 py-3 rounded-xl font-bold text-[10px] uppercase shadow-lg">2ГИС</a>
+                    <a href="yandexnavi://build_route_on_map?lat_to=43.193926&lon_to=76.90354" class="bg-[#ffcc00] text-black px-6 py-3 rounded-xl font-bold text-[10px] uppercase shadow-lg">Навигатор</a>
                 </div>
-                
-                <div class="space-y-2">
-                    <p class="text-gray-400 text-lg italic">Бостандыкский район,</p>
-                    <p class="text-white text-2xl font-bold italic">улица Исиналиева, дом 1/1</p>
-                </div>
-
-                <div class="flex flex-wrap gap-3 pt-4">
-                    <a href="https://2gis.kz/almaty/search/43.193926%2C76.90354" target="_blank" class="bg-[#24a723] text-white px-8 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#1e8a1d] transition-all shadow-lg shadow-green-900/20">
-                        Открыть в 2ГИС
-                    </a>
-                    <a href="yandexnavi://build_route_on_map?lat_to=43.193926&lon_to=76.90354" class="bg-[#ffcc00] text-black px-8 py-4 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-[#e6b800] transition-all shadow-lg shadow-yellow-900/20">
-                        Навигатор
-                    </a>
-                </div>
-
-                <div class="pt-8 border-t border-white/10">
-                    <p class="text-red-600 font-bold uppercase text-[10px] tracking-widest mb-4">На связи</p>
-                    <a href="tel:+77018087768" class="text-3xl md:text-5xl font-black text-white hover:text-red-500 transition brand-font italic tracking-tighter leading-none">+7 701 808 77 68</a>
-                    <p class="mt-4 text-gray-500 font-bold italic text-xl uppercase">Жандос</p>
+                <div class="pt-6 border-t border-white/10">
+                    <p class="text-gray-500 font-bold uppercase text-[10px] tracking-widest mb-1" data-i18n="manager">Менеджер Жандос</p>
+                    <a href="tel:+77018087768" class="text-3xl font-orbitron font-black text-white">+7 701 808 77 68</a>
                 </div>
             </div>
-
-            <div class="flex-1 w-full min-h-[450px] rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl relative bg-black">
-                <iframe src="https://yandex.ru/map-widget/v1/?ll=76.90354,43.193926&z=18&l=map&pt=76.90354,43.193926,pm2rdm" 
-                        width="100%" 
-                        height="100%" 
-                        frameborder="0" 
-                        allowfullscreen="true" 
-                        style="position:relative; filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);">
-                </iframe>
+            <div class="flex-1 w-full min-h-[400px] rounded-3xl overflow-hidden border border-white/10 bg-black">
+                <iframe src="https://yandex.ru/map-widget/v1/?ll=76.90354,43.193926&z=17.5&l=map&pt=76.90354,43.193926,pm2rdm" width="100%" height="100%" frameborder="0" style="filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%); border: none;"></iframe>
             </div>
         </div>
     </section>
 
-    <footer class="py-20 text-center border-t border-white/5 bg-[#050505]">
-        <div class="brand-font text-4xl font-black uppercase italic mb-6">AutoAvenue <span class="text-red-600">77</span></div>
-        <div class="flex justify-center space-x-8 text-[9px] font-bold uppercase tracking-[0.4em] text-gray-600 mb-8">
-            <a href="#about" class="hover:text-white transition">О нас</a>
-            <a href="#catalog" class="hover:text-white transition">Каталог</a>
-            <a href="#contact" class="hover:text-white transition">Контакты</a>
-        </div>
-        <p class="text-gray-700 text-[8px] uppercase tracking-[0.6em] italic leading-loose">
-            &copy; 2025 AutoAvenue 77. Алматы, Исиналиева 1/1.<br>
-            Designed for performance.
+    <footer class="py-16 text-center border-t border-white/5 bg-[#030303]">
+        <div class="font-orbitron text-2xl font-black uppercase italic mb-6 tracking-tighter text-white">AutoAvenue <span class="text-brand">77</span></div>
+        <p class="text-gray-600 text-[9px] uppercase tracking-[0.4em] italic leading-loose">
+            &copy; 2026 AutoAvenue 77.<br>Алматы, Исиналиева 1/1.
         </p>
     </footer>
 
+    <script>
+        // 1. СЛОВАРИ ДЛЯ ПЕРЕВОДА (i18n)
+        let currentLang = 'ru';
+        const dict = {
+            ru: {
+                nav_about: "О магазине", nav_catalog: "Каталог", nav_contact: "Контакты",
+                cart_title: "Корзина", cart_total: "Итого:", cart_btn: "Оформить в WhatsApp", cart_empty: "Корзина пуста",
+                specs: "Характеристики", add_to_cart: "В корзину",
+                hero_desc: "Интерактивный каталог автоаксессуаров в Алматы.", btn_catalog: "Перейти в каталог",
+                ph_search: "Поиск товаров...", f_all: "Всё", f_chem: "Химия", f_light: "Свет", f_acc: "Аксессуары",
+                address: "Наш адрес", address_full: "Алматы, Бостандыкский район,<br>ул. Исиналиева, 1/1", manager: "Менеджер Жандос",
+                about_text_1: "AutoAvenue 77 — это специализированный центр в Бостандыкском районе Алматы. Мы предлагаем только проверенные бренды автоаксессуаров, света и химии. Наша главная цель — сделать уход за вашим автомобилем профессиональным и доступным.",
+                about_stat_1: "Оригинальная продукция", about_stat_2: "Товаров в наличии", about_stat_3: "Поддержка клиентов",
+                about_title_2: "Что мы предлагаем?", about_list_1: "<strong>Автосвет:</strong> LED, ксенон и галоген с официальной гарантией.", about_list_2: "<strong>Автохимия:</strong> Премиальные чернители, полироли и очистители кузова.", about_list_3: "<strong>Аксессуары:</strong> Ароматизаторы, щетки стеклоочистителя, аптечки.",
+                about_title_3: "Почему выбирают нас?", about_text_2: "В отличие от крупных сетевых магазинов, мы знаем каждого нашего клиента и его автомобиль. Менеджер Жандос лично проверяет качество каждой партии товара. Мы не продаем то, что не стали бы использовать сами.", about_text_3: "У нас нет сложных процедур возврата или долгого ожидания консультанта. Напишите нам в WhatsApp, скиньте фото фары или панели, и мы за 5 минут подберем нужную деталь."
+            },
+            kz: {
+                nav_about: "Дүкен туралы", nav_catalog: "Каталог", nav_contact: "Байланыс",
+                cart_title: "Себет", cart_total: "Барлығы:", cart_btn: "WhatsApp-та рәсімдеу", cart_empty: "Себет бос",
+                specs: "Сипаттамалары", add_to_cart: "Себетке қосу",
+                hero_desc: "Алматыдағы автоаксессуарлардың интерактивті каталогы.", btn_catalog: "Каталогқа өту",
+                ph_search: "Тауарларды іздеу...", f_all: "Барлығы", f_chem: "Химия", f_light: "Жарық", f_acc: "Аксессуарлар",
+                address: "Біздің мекен-жай", address_full: "Алматы, Бостандық ауданы,<br>Исиналиев көш., 1/1", manager: "Менеджер Жандос",
+                about_text_1: "AutoAvenue 77 — Алматы қаласының Бостандық ауданындағы мамандандырылған орталық. Біз тек тексерілген автоаксессуарлар мен химия брендтерін ұсынамыз. Біздің басты мақсатымыз – автокөлігіңізге күтім жасауды кәсіби және қолжетімді ету.",
+                about_stat_1: "Түпнұсқа өнім", about_stat_2: "Қолда бар тауарлар", about_stat_3: "Клиенттерді қолдау",
+                about_title_2: "Біз не ұсынамыз?", about_list_1: "<strong>Автожарық:</strong> Ресми кепілдігі бар LED, ксенон және галоген.", about_list_2: "<strong>Автохимия:</strong> Премиум қарайтқыштар, полирольдер және тазалағыштар.", about_list_3: "<strong>Аксессуарлар:</strong> Иістендіргіштер, әйнек тазалағыштар, қобдишалар.",
+                about_title_3: "Неліктен бізді таңдайды?", about_text_2: "Ірі желілік дүкендерден айырмашылығымыз, біз әрбір клиентімізді және оның көлігін білеміз. Менеджер Жандос әр тауардың сапасын жеке тексеріп алады. Өзіміз қолданбайтын нәрсені сатпаймыз.", about_text_3: "Бізде қайтарудың күрделі процедуралары немесе кеңесшіні ұзақ күту жоқ. Бізге WhatsApp-қа жазып, фараның суретін жіберіңіз, 5 минут ішінде дұрыс бөлшекті тауып береміз."
+            }
+        };
+
+        // 2. БАЗА ТОВАРОВ
+        const products = [
+            { id: 1, cat: "acc", price: 2500,
+              ru: { name: "Премиум Ароматизатор", desc: "Подвесной флакон с парфюмом.", specs: "Объем: 8мл. Срок: 45 дней." },
+              kz: { name: "Премиум Иістендіргіш", desc: "Айнаға ілетін парфюмді құты.", specs: "Көлемі: 8мл. Мерзімі: 45 күн." } },
+            { id: 2, cat: "chem", price: 1800,
+              ru: { name: "Незамерзайка -30°C", desc: "Омыватель 5л без запаха.", specs: "Объем: 5 литров. Температура: до -30°C." },
+              kz: { name: "Қатпайтын сұйықтық -30°C", desc: "Иіссіз 5л әйнек жуғыш.", specs: "Көлемі: 5 литр. Температура: -30°C дейін." } },
+            { id: 3, cat: "acc", price: 4500,
+              ru: { name: "Щетки бескаркасные", desc: "Дворники, идеальное прилегание.", specs: "Тип: Бескаркасные. Размеры: Все в наличии." },
+              kz: { name: "Қаңқасыз щеткалар", desc: "Әйнек тазалағыштар.", specs: "Түрі: Қаңқасыз. Өлшемдері: Барлығы бар." } },
+            { id: 4, cat: "chem", price: 3200,
+              ru: { name: "Чернитель шин", desc: "Профессиональный спрей.", specs: "Объем: 500мл. Эффект: Мокрый блеск." },
+              kz: { name: "Шина қарайтқыш", desc: "Кәсіби спрей.", specs: "Көлемі: 500мл. Эффект: Ылғалды жылтыр." } },
+            { id: 5, cat: "light", price: 12000,
+              ru: { name: "Лампы LED H7", desc: "Сверхъяркие светодиоды.", specs: "Цоколь: H7. Цвет: 6000K (Белый)." },
+              kz: { name: "LED H7 шамдары", desc: "Жарықтығы жоғары жарықдиодтар.", specs: "Цоколь: H7. Түсі: 6000K (Ақ)." } },
+            { id: 6, cat: "light", price: 6500,
+              ru: { name: "Галоген Osram", desc: "Лампы с увеличенным сроком службы.", specs: "Тип: Галоген. Качество: Оригинал." },
+              kz: { name: "Галоген Osram", desc: "Қызмет ету мерзімі ұзартылған шамдар.", specs: "Түрі: Галоген. Сапасы: Түпнұсқа." } },
+            { id: 7, cat: "acc", price: 3500,
+              ru: { name: "Аптечка автомобильная", desc: "Набор по ГОСТу для техосмотра.", specs: "Состав: Полный медицинский набор РК." },
+              kz: { name: "Автокөлік дәрі қобдишасы", desc: "Техникалық байқауға арналған жинақ.", specs: "Құрамы: ҚР толық медициналық жинағы." } },
+            { id: 8, cat: "acc", price: 4000,
+              ru: { name: "Огнетушитель ОП-2", desc: "Порошковый огнетушитель 2кг.", specs: "Масса: 2 кг. Тип: Порошковый (ОП-2)." },
+              kz: { name: "Өрт сөндіргіш ОП-2", desc: "Ұнтақты өрт сөндіргіш 2кг.", specs: "Салмағы: 2 кг. Түрі: Ұнтақты (ОП-2)." } }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('aa77cart')) || [];
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        document.getElementById('lang-btn').addEventListener('click', () => {
+            currentLang = currentLang === 'ru' ? 'kz' : 'ru';
+            document.getElementById('lang-btn').innerText = currentLang === 'ru' ? 'KZ' : 'RU';
+            updateTranslations(); renderProducts(); updateCartUI();
+        });
+
+        function updateTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => el.innerHTML = dict[currentLang][el.getAttribute('data-i18n')]);
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = dict[currentLang][el.getAttribute('data-i18n-ph')]);
+        }
+
+        const grid = document.getElementById('products-grid');
+        document.getElementById('search-input').addEventListener('input', (e) => { searchQuery = e.target.value.toLowerCase(); renderProducts(); });
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => { b.classList.remove('active', 'border-brand', 'bg-brand/20', 'text-white'); b.classList.add('border-white/10', 'bg-white/5', 'text-gray-400'); });
+                e.target.classList.add('active', 'border-brand', 'bg-brand/20', 'text-white'); e.target.classList.remove('border-white/10', 'bg-white/5', 'text-gray-400');
+                currentFilter = e.target.dataset.filter; renderProducts();
+            });
+        });
+
+        // РЕНДЕР КАРТОЧЕК БЕЗ ФОТО
+        function renderProducts() {
+            grid.innerHTML = '';
+            let filtered = products.filter(p => currentFilter === 'all' || p.cat === currentFilter);
+            if (searchQuery) filtered = filtered.filter(p => p[currentLang].name.toLowerCase().includes(searchQuery) || p[currentLang].desc.toLowerCase().includes(searchQuery));
+            
+            filtered.forEach((p, i) => {
+                const card = document.createElement('div');
+                card.className = `glass-panel p-6 rounded-3xl flex flex-col justify-between hover:border-brand/50 transition-all cursor-pointer`;
+                card.onclick = () => openModal(p.id);
+                card.innerHTML = `
+                    <div class="mb-6">
+                        <span class="text-brand/60 font-orbitron font-black text-3xl italic block mb-4">0${p.id}</span>
+                        <h3 class="text-white font-bold uppercase text-lg leading-tight mb-2">${p[currentLang].name}</h3>
+                        <p class="text-gray-500 text-sm h-10 overflow-hidden">${p[currentLang].desc}</p>
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t border-white/5">
+                        <span class="text-white font-orbitron font-bold text-xl">${p.price} ₸</span>
+                        <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        let currentProductId = null;
+        function openModal(id) {
+            currentProductId = id;
+            const p = products.find(x => x.id === id);
+            document.getElementById('modal-cat').innerText = p.cat;
+            document.getElementById('modal-title').innerText = p[currentLang].name;
+            document.getElementById('modal-desc').innerText = p[currentLang].desc;
+            document.getElementById('modal-specs').innerText = p[currentLang].specs;
+            document.getElementById('modal-price').innerText = `${p.price} ₸`;
+            document.getElementById('product-modal').classList.add('open');
+            document.getElementById('main-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        document.getElementById('modal-add-btn').addEventListener('click', () => { addToCart(currentProductId); closeSidebars(); openCart(); });
+
+        function saveCart() { localStorage.setItem('aa77cart', JSON.stringify(cart)); updateCartUI(); }
+        function addToCart(id) { const existing = cart.find(i => i.id === id); if (existing) existing.qty += 1; else cart.push({ id, qty: 1 }); saveCart(); }
+        function changeQty(id, delta) { const item = cart.find(i => i.id === id); if(item) { item.qty += delta; if(item.qty <= 0) cart = cart.filter(i => i.id !== id); saveCart(); } }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items');
+            let totalItems = 0; let totalPrice = 0;
+            container.innerHTML = cart.map(item => {
+                const p = products.find(x => x.id === item.id); if(!p) return '';
+                totalItems += item.qty; totalPrice += p.price * item.qty;
+                return `
+                <div class="glass-panel p-3 rounded-xl flex justify-between items-center bg-white/5">
+                    <div class="flex-1"><h4 class="text-white text-xs font-bold uppercase">${p[currentLang].name}</h4><p class="text-brand text-xs">${p.price} ₸</p></div>
+                    <div class="flex items-center gap-2 bg-dark p-1 rounded-lg border border-white/5">
+                        <button onclick="changeQty(${item.id}, -1)" class="w-6 text-gray-400">-</button><span class="text-white text-xs w-4 text-center">${item.qty}</span><button onclick="changeQty(${item.id}, 1)" class="w-6 text-gray-400">+</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('cart-count').innerText = totalItems;
+            document.getElementById('cart-total').innerText = `${totalPrice} ₸`;
+            if (cart.length === 0) container.innerHTML = `<p class="text-gray-600 text-center mt-10 text-xs font-bold uppercase">${dict[currentLang].cart_empty}</p>`;
+        }
+
+        document.getElementById('checkout-btn').addEventListener('click', () => {
+            if(cart.length === 0) return;
+            let text = currentLang === 'ru' ? "Здравствуйте! Заказ:\n" : "Сәлеметсіз бе! Тапсырыс:\n";
+            let total = 0;
+            cart.forEach((item, i) => { const p = products.find(x => x.id === item.id); text += `${i+1}. ${p[currentLang].name} — ${item.qty}шт\n`; total += p.price * item.qty; });
+            text += `\nИтого: ${total} ₸`; window.open(`https://wa.me/77018087768?text=${encodeURIComponent(text)}`, '_blank');
+        });
+
+        // FAQ логика
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('svg');
+                
+                document.querySelectorAll('.faq-content').forEach(el => { if(el !== content) el.style.maxHeight = null; });
+                document.querySelectorAll('.faq-btn svg').forEach(el => { if(el !== icon) el.style.transform = 'rotate(0deg)'; });
+
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        function openCart() { document.getElementById('cart-sidebar').classList.add('open'); document.getElementById('main-overlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+        function closeSidebars() { document.querySelectorAll('#cart-sidebar, #product-modal, .overlay').forEach(e => e.classList.remove('open')); document.body.style.overflow = 'auto'; }
+        
+        document.getElementById('cart-btn').addEventListener('click', openCart);
+        document.querySelectorAll('.close-sidebar, .overlay').forEach(btn => btn.addEventListener('click', closeSidebars));
+
+        window.onload = () => {
+            updateTranslations(); renderProducts(); updateCartUI();
+            setTimeout(() => { document.getElementById('preloader').style.opacity = '0'; setTimeout(() => document.getElementById('preloader').style.display = 'none', 500); document.body.classList.remove('overflow-hidden'); document.querySelectorAll('.reveal').forEach((el, i) => setTimeout(() => el.classList.add('active'), i * 150)); }, 800);
+        };
+        window.addEventListener('scroll', () => {
+            document.querySelectorAll('.reveal:not(.active)').forEach(el => { if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('active'); });
+            const nav = document.getElementById('navbar'); if(window.scrollY > 50) nav.classList.add('bg-darker/90', 'border-b', 'border-white/10', 'px-4'); else nav.classList.remove('bg-darker/90', 'border-b', 'border-white/10', 'px-4');
+        });
+    </script>
 </body>
 </html>
